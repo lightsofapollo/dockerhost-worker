@@ -18,4 +18,4 @@ sudo sh -c "echo deb https://get.docker.io/ubuntu docker main\
 sudo apt-get update -y
 
 ## Install all the packages
-sudo apt-get install -y lxc-docker lvm2 linux-image-extra-`uname -r` jq
+sudo apt-get install -y curl lxc-docker lvm2 linux-image-extra-`uname -r` jq
