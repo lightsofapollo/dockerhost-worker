@@ -1,0 +1,74 @@
+{
+  "description": "Docker Host Worker",
+  "variables": {
+    "debug.level": "*",
+    "taskcluster.clientId": "",
+    "taskcluster.accessToken": "",
+    "filesystem": "",
+    "papertrail": "",
+    "pulse.username": "",
+    "pulse.password": "",
+    "package": "",
+    "contents": ""
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "deploy/packer/scripts/packages.sh",
+        "deploy/packer/scripts/node.sh"
+      ]
+    },
+    {
+      "type":           "file",
+      "source":         "{{user `package`}}",
+      "destination":    "/tmp/dockerhost.tgz"
+    },
+    {
+      "type":           "file",
+      "source":         "{{user `contents`}}",
+      "destination":    "/tmp/deploy.tar.gz"
+    },
+    {
+      "type":           "file",
+      "source":         "deploy/packer/scripts/deploy.sh",
+      "destination":    "/tmp/deploy.sh"
+    },
+    {
+      "type":           "shell",
+      "inline":         ["chmod u+x /tmp/deploy.sh"]
+    },
+    {
+      "type":           "shell",
+      "environment_vars": ["PAPERTRAIL={{user `papertrail`}}"],
+      "inline": [
+        "/tmp/deploy.sh /tmp/deploy.tar.gz /tmp/dockerhost.tgz"
+      ]
+    }
+  ],
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "us-west-2",
+      "source_ami": "ami-f33e4dc3",
+      "ami_virtualization_type": "hvm",
+      "instance_type": "m3.large",
+      "ssh_username": "ubuntu",
+      "ami_name": "taskcluster-docker-worker-base {{timestamp}}",
+      "tags": {
+        "OS_Version": "Ubuntu",
+        "Release": "Latest"
+      }
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "deploy/packer/base.box",
+      "keep_input_artifact": true
+    }
+  ]
+}
+
+

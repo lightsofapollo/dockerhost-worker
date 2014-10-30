@@ -1,0 +1,11 @@
+{
+  "taskcluster": {
+    "clientId": "{{taskcluster.clientId}}",
+    "accessToken": "{{taskcluster.accessToken}}"
+  },
+
+  "pulse": {
+    "username": "{{pulse.username}}",
+    "password": "{{pulse.password}}"
+  }
+}

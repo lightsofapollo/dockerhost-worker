@@ -1,0 +1,8 @@
+{
+  "debug.level": "{{debug.level}}",
+  "taskcluster.clientId": "{{taskcluster.clientId}}",
+  "taskcluster.accessToken": "{{taskcluster.accessToken}}",
+  "papertrail": "{{papertrail}}",
+  "pulse.username": "{{pulse.username}}",
+  "pulse.password": "{{pulse.password}}"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "dockerhost-worker",
+  "version": "0.0.0",
+  "description": "dockerhost-worker =================",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/lightsofapollo/dockerhost-worker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lightsofapollo/dockerhost-worker/issues"
+  },
+  "homepage": "https://github.com/lightsofapollo/dockerhost-worker",
+  "devDependencies": {
+    "cli-color": "^0.3.2",
+    "json-templater": "^1.0.1"
+  },
+  "dependencies": {
+    "co": "^3.1.0",
+    "co-prompt": "^1.0.0",
+    "mkdirp": "^0.5.0"
+  }
+}

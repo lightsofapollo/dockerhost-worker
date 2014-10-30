@@ -1,0 +1,54 @@
+#! /bin/bash -e
+
+cmd_help() {
+  echo "Usage: ./deploy/bin/build"
+  echo
+  echo 'Wrapper for the `packer` build tool with docker-worker specific logic.'
+  echo
+  echo "Commands:"
+  echo "  help: show this help message"
+}
+
+packer_run() {
+  echo $@
+  echo
+  echo
+  echo "packer $@"
+  time packer $@
+}
+
+template_vars() {
+  echo "deploy/target/packer/$1.json"
+}
+
+cmd_build() {
+  # Package up the node app.
+  local npm_package=$(npm pack)
+
+  # Configure the deployment if needed...
+  make -j100 -C deploy
+
+  packer_run \
+    build \
+    $@ \
+    -var-file deploy/target/packer.json  \
+    -var "contents=deploy/deploy.tar.gz" \
+    -var "package=$npm_package" \
+   deploy/packer/packer.json
+}
+
+if [ ! -x $(which packer) ];
+then
+  echo "This tool requires packer go download and install it first."
+  cmd_help
+  exit 1
+fi
+
+case "$1" in
+"help")
+  cmd_help
+  ;;
+*)
+  cmd_build ${@:2}
+  ;;
+esac
