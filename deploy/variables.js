@@ -46,6 +46,10 @@ module.exports = {
     description: 'Papertrail host + port'
   },
 
+  'influxdb': {
+    description: 'influx db connection string'
+  },
+
   'pulse.username': {
     description: 'Pulse username (see https://pulse.mozilla.org/profile)',
     value: process.env.PULSE_USERNAME

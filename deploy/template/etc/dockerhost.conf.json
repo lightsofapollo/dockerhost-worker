@@ -1,11 +1,17 @@
 {
   "taskcluster": {
-    "clientId": "{{taskcluster.clientId}}",
-    "accessToken": "{{taskcluster.accessToken}}"
+    "credentials": {
+      "clientId": "{{taskcluster.clientId}}",
+      "accessToken": "{{taskcluster.accessToken}}"
+    }
   },
 
   "pulse": {
     "username": "{{pulse.username}}",
     "password": "{{pulse.password}}"
+  },
+
+  "influx": {
+    "connectionString": "{{influx}}"
   }
 }
