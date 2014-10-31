@@ -1,0 +1,20 @@
+id: http://schemas.taskcluster.net/dockerhost-worker/v1/authenticate-response.json#
+$schema:  http://json-schema.org/draft-04/schema#
+title: Get SSL keys to authenticate with docker
+description: Fetch SSL Keys to authenticate with docker
+type: object
+properties:
+  cacert:
+    description: CA Cert contentes
+    type: string
+  cert:
+    description: Signed client cert
+    type: string
+  key:
+    description: Client private key
+    type: string
+additionalProperties:       false
+required:
+  - cacert
+  - cert
+  - key

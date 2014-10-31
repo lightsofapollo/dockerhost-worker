@@ -4,7 +4,8 @@
   "description": "dockerhost-worker =================",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --harmony bin/server production"
   },
   "repository": {
     "type": "git",
@@ -18,14 +19,22 @@
   "homepage": "https://github.com/lightsofapollo/dockerhost-worker",
   "devDependencies": {
     "cli-color": "^0.3.2",
-    "json-templater": "^1.0.1"
+    "json-templater": "^1.0.1",
+    "mocha": "^2.0.1",
+    "taskcluster-client": "^0.17.9"
   },
   "dependencies": {
     "co": "^3.1.0",
+    "co-fs": "^1.2.0",
     "co-prompt": "^1.0.0",
     "debug": "^2.1.0",
+    "dockerode-options": "^0.1.0",
     "mkdirp": "^0.5.0",
+    "promise": "^6.0.1",
+    "superagent": "^0.20.0",
+    "superagent-promise": "^0.2.0",
     "taskcluster-base": "^0.6.0",
-    "taskcluster-client": "^0.17.9"
+    "taskcluster-client": "^0.17.9",
+    "temp": "^0.8.1"
   }
 }

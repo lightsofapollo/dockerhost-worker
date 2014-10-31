@@ -3,7 +3,7 @@ module.exports = {
   server: {
     env: 'development',
     port: 60023,
-    baseUrl: 'http://localhost'
+    baseUrl: 'http://localhost:60023/v1'
   },
 
   taskcluster: {
@@ -14,7 +14,9 @@ module.exports = {
   },
 
   worker: {
-    statsComponent: 'dockerhost'
+    statsComponent: 'dockerhost',
+    // Path to the SSL related keys.
+    keysPath: undefined
   },
 
   influx: {
