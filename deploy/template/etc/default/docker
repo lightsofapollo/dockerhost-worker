@@ -44,4 +44,19 @@ mkdir -p /mnt/docker-tmp
 mkdir -p /mnt/var/cache/docker-worker
 
 export TMPDIR="/mnt/docker-tmp"
-export DOCKER_OPTS=" -g /mnt/var/lib/docker -s aufs"
+
+META=http://169.254.169.254/latest/meta-data
+host=$(curl $META/public-hostname)
+key_root=/mnt/docker_keys
+
+# Generate the keys
+mkdir -p $key_root
+dockerkeys.sh $host $key_root
+
+DOCKER_OPTS=" -g /mnt/var/lib/docker -s aufs"
+DOCKER_OPTS="$DOCKER_OPTS --tlsverify --tlscacert=$key_root/ca.pem"
+DOCKER_OPTS="$DOCKER_OPTS --tlscert=$key_root/server-cert.pem"
+DOCKER_OPTS="$DOCKER_OPTS --tlskey=$key_root/server-key.pem"
+DOCKER_OPTS="$DOCKER_OPTS -H $host:2376"
+
+export DOCKER_OPTS

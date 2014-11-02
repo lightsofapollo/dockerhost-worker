@@ -6,9 +6,20 @@
     }
   },
 
+  "worker": {
+    "keysPath": "/mnt/docker_keys/"
+  },
+
+  "purge": {
+    "enabled": true,
+    "files": ["/etc/dockerhost.conf.json"]
+  },
+
   "pulse": {
-    "username": "{{pulse.username}}",
-    "password": "{{pulse.password}}"
+    "credentials": {
+      "username": "{{pulse.username}}",
+      "password": "{{pulse.password}}"
+    }
   },
 
   "influx": {
