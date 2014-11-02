@@ -4,15 +4,29 @@ var base = require('taskcluster-base');
 var path = require('path');
 var v1 = require('../routes/v1');
 var Worker = require('../lib/worker');
-var co = require('co')
+var co = require('co');
+var fs = require('fs');
+
 var loadConfig = require('../lib/config');
 
 var Auth = require('taskcluster-client').Auth;
 
 /** Launch server */
 function* launch (profile) {
-  debug("Launching with profile: %s", profile);
+  debug('Launching with profile: %s', profile);
   var config = yield loadConfig(profile);
+
+  // After we give control of the machine over to a user we should make a
+  // modest effort not to leak credentials...
+  if (config.purge.enabled) {
+    debug('purging');
+    var purges = config.purge.files.forEach(function(file) {
+      if (fs.existsSync(file)) {
+        debug('purge', file);
+        //fs.unlinkSync(file);
+      }
+    });
+  }
 
   var statsDrain;
   if (config.influx.connectionString) {
