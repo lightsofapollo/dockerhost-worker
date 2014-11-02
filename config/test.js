@@ -1,5 +1,7 @@
 module.exports = {
   worker: {
-    keysPath: __dirname + '/../test/keys'
+    host: 'test',
+    keysPath: __dirname + '/../test/keys',
+    createQueue: false
   }
 };

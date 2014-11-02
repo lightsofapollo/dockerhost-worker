@@ -1,9 +1,22 @@
 module.exports = {
 
+  /** Config normally fetched from AWS */
+  host: 'localhost',
+  provisionerId: undefined,
+  workerType: undefined,
+  workerGroup: undefined,
+  workerNodeType: undefined,
+
   server: {
     env: 'development',
-    port: 60023,
-    baseUrl: 'http://localhost:60023/v1'
+    port: 60023
+  },
+
+  pulse: {
+    credentials: {
+      username: process.env.PULSE_USERNAME,
+      password: process.env.PULSE_PASSWORD
+    }
   },
 
   taskcluster: {
@@ -14,9 +27,11 @@ module.exports = {
   },
 
   worker: {
+    host: 'local',
     statsComponent: 'dockerhost',
     // Path to the SSL related keys.
-    keysPath: undefined
+    keysPath: undefined,
+    createQueue: true,
   },
 
   influx: {

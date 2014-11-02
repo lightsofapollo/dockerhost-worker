@@ -25,7 +25,7 @@ api.declare({
   description: 'Authenticate with taskcluster and return docker credentials.',
   output: SCHEMA_PREFIX_CONST + 'authenticate-response.json#'
 }, co(function* (req, res) {
-  var keysPath = this.cfg.get('worker:keysPath');
+  var keysPath = this.worker.keysPath;
   if (!(yield fs.exists(keysPath))) {
     return res.status(500).json({
       message: 'Mis-configured keys path!'

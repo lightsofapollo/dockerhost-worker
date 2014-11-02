@@ -3,29 +3,23 @@ var debug = require('debug')('dockerhost:bin:server');
 var base = require('taskcluster-base');
 var path = require('path');
 var v1 = require('../routes/v1');
+var Worker = require('../lib/worker');
 var co = require('co')
+var loadConfig = require('../lib/config');
 
 var Auth = require('taskcluster-client').Auth;
 
 /** Launch server */
 function* launch (profile) {
   debug("Launching with profile: %s", profile);
-
-  // Load configuration
-  var cfg = base.config({
-    defaults:     require('../config/defaults'),
-    profile:      require('../config/' + profile),
-    envs: [],
-    filename:     'dockerhost'
-  });
-
+  var config = yield loadConfig(profile);
 
   var statsDrain;
-  if (cfg.get('influx:connectionString')) {
+  if (config.influx.connectionString) {
     statsDrain = new base.stats.Influx({
-      connectionString:   cfg.get('influx:connectionString'),
-      maxDelay:           cfg.get('influx:maxDelay'),
-      maxPendingPoints:   cfg.get('influx:maxPendingPoints')
+      connectionString:   config.influx.connectionString,
+      maxDelay:           config.influx.maxDelay,
+      maxPendingPoints:   config.influx.maxPendingPoints
     });
   } else {
     statsDrain = new base.stats.NullDrain();
@@ -34,7 +28,7 @@ function* launch (profile) {
   // Start monitoring the process
   base.stats.startProcessUsageReporting({
     drain:      statsDrain,
-    component:  cfg.get('worker:statsComponent'),
+    component:  config.worker.statsComponent,
     process:    'server'
   });
 
@@ -49,16 +43,13 @@ function* launch (profile) {
 
   // Create API router and publish reference if needed
   var routerOpts = {
-    context: {
-      auth: new Auth(cfg.get('taskcluster')),
-      cfg: cfg
-    },
+    context:          config,
     validator:        validator,
-    credentials:      cfg.get('taskcluster:credentials'),
-    baseUrl:          cfg.get('server:baseUrl'),
+    credentials:      config.taskcluster.credentials,
+    baseUrl:          config.server.baseUrl,
     publish:          false,
     referencePrefix:  'dockerhost/v1/api.json',
-    component:        cfg.get('worker:statsComponent'),
+    component:        config.worker.statsComponent,
     drain:            statsDrain
   };
 
@@ -67,8 +58,8 @@ function* launch (profile) {
 
   // Create app
   var app = base.app({
-    port:           Number(process.env.PORT || cfg.get('server:port')),
-    env:            cfg.get('server:env'),
+    port:           Number(process.env.PORT || config.server.port),
+    env:            config.server.env,
     forceSSL:       false,
     trustProxy:     true
   });
@@ -79,8 +70,10 @@ function* launch (profile) {
     res.send(reference);
   });
 
-  // Create server
-  return yield app.createServer();
+  var worker = new Worker(config);
+
+  yield app.createServer();
+  yield worker.launch();
 };
 
 co(function* () {
