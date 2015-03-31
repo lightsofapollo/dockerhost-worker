@@ -37,6 +37,7 @@ api.declare({
     cacert: fs.readFile(path.join(keysPath, 'ca.pem'), 'utf8'),
     cert: fs.readFile(path.join(keysPath, 'cert.pem'), 'utf8'),
     key: fs.readFile(path.join(keysPath, 'key.pem'), 'utf8'),
+    host: this.host + ':2376'
   }
 
   res.reply(result);

@@ -13,8 +13,13 @@ properties:
   key:
     description: Client private key
     type: string
-additionalProperties:       false
+  host:
+    description: Docker host
+    type: string
+    foramt: uri
+additionalProperties: false
 required:
   - cacert
   - cert
   - key
+  - host

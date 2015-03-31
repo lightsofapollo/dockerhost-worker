@@ -74,3 +74,4 @@ openssl x509 \
 # Finally, you need to remove the passphrase from the client and server key:
 
 openssl rsa -passin pass:$uuid -in server-key.pem -out server-key.pem
+openssl rsa -passin pass:$uuid -in key.pem -out key.pem

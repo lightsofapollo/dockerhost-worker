@@ -37,7 +37,7 @@
     "superagent": "^0.20.0",
     "superagent-promise": "^0.2.0",
     "taskcluster-base": "^0.6.0",
-    "taskcluster-client": "^0.17.9",
+    "taskcluster-client": "^0.21.4",
     "temp": "^0.8.1"
   }
 }

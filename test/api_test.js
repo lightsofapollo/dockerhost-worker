@@ -15,6 +15,7 @@ suite('api', function() {
       cacert: 'ca.pem\n',
       cert: 'cert.pem\n',
       key: 'key.pem\n',
+      host: 'localhost:2376'
     });
   }));
 });
